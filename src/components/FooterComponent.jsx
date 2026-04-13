@@ -1,7 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 
 const NO_FOOTER = ['/', '/login', '/registro']
-
 function Footer() {
   const { pathname } = useLocation()
   if (NO_FOOTER.includes(pathname)) return null

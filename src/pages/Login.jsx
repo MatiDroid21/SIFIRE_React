@@ -27,6 +27,7 @@ export default function Login() {
   // Muestra banner si viene de registro exitoso
   const registradoOk = location.state?.registrado;
 
+  // Validación básica del formulario
   const validate = () => {
     const e = {};
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
@@ -44,6 +45,8 @@ export default function Login() {
   };
 
   // TODO: conectar con POST /api/usuarios/login
+  // o eso se supone eso que lo vea el backend, no? xd
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -90,7 +93,7 @@ export default function Login() {
             {/* Banner registro exitoso */}
             {registradoOk && (
               <div className="alert alert-success py-2 small text-center" role="alert">
-                ✅ Cuenta creada. Ya puedes iniciar sesión.
+               Cuenta creada. Ya puedes iniciar sesión.
               </div>
             )}
 
@@ -140,7 +143,7 @@ export default function Login() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="btn btn-danger w-100 py-2 fw-semibold"
+                    className="btn btn-primary w-100 py-2 fw-semibold"
                   >
                     {loading
                       ? <><span className="spinner-border spinner-border-sm me-2" />Ingresando…</>
