@@ -1,410 +1,435 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-/* ── Particle spark ─────────────────────────────────────────── */
-function useFireCanvas(canvasRef) {
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    let raf;
-
-    const resize = () => {
-      canvas.width  = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    /* ember particles */
-    const embers = Array.from({ length: 120 }, () => spawn(canvas));
-
-    function spawn(c, fromBottom = false) {
-      const x = Math.random() * c.width;
-      return {
-        x,
-        y: fromBottom ? c.height + 10 : Math.random() * c.height,
-        vx: (Math.random() - 0.5) * 1.2,
-        vy: -(Math.random() * 2.5 + 1),
-        size: Math.random() * 3 + 1,
-        life: Math.random(),
-        maxLife: Math.random() * 0.6 + 0.4,
-        hue: Math.random() * 40 + 10, // 10-50 → orange-yellow
-      };
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      embers.forEach((e, i) => {
-        e.x  += e.vx;
-        e.y  += e.vy;
-        e.vy -= 0.03; // accelerate upward
-        e.vx += (Math.random() - 0.5) * 0.15;
-        e.life += 0.008;
-
-        if (e.life > e.maxLife || e.y < -10) {
-          embers[i] = spawn(canvas, true);
-          return;
-        }
-
-        const alpha = 1 - e.life / e.maxLife;
-        ctx.beginPath();
-        ctx.arc(e.x, e.y, e.size * alpha, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${e.hue}, 100%, ${60 + alpha * 30}%, ${alpha})`;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = `hsla(${e.hue}, 100%, 60%, ${alpha * 0.8})`;
-        ctx.fill();
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-    draw();
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
-    };
-  }, [canvasRef]);
-}
-
-/* ── Animated 404 digits ─────────────────────────────────────── */
-function BurningDigit({ char, delay = 0 }) {
+/* ── Sello SVG institucional ─────────────────────────────────── */
+function SelloInstitucional() {
   return (
-    <span
-      className="burning-digit"
-      style={{ animationDelay: `${delay}s` }}
+    <svg
+      viewBox="0 0 120 120"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="Sello SIFIRE"
+      style={{ width: 90, height: 90 }}
     >
-      {char}
-    </span>
+      {/* Círculo exterior */}
+      <circle cx="60" cy="60" r="56" fill="none" stroke="#b22222" strokeWidth="3.5" />
+      <circle cx="60" cy="60" r="48" fill="none" stroke="#b22222" strokeWidth="1" strokeDasharray="3 4" />
+      {/* Cuerpo del sello */}
+      <circle cx="60" cy="60" r="44" fill="#fff8f0" />
+      {/* Cruz de bomberos */}
+      <rect x="54" y="30" width="12" height="40" rx="3" fill="#b22222" />
+      <rect x="30" y="54" width="60" height="12" rx="3" fill="#b22222" />
+      {/* Llama pequeña */}
+      <path
+        d="M60 44 C57 36 63 28 60 22 C58 28 55 32 60 44Z"
+        fill="#ff7a00"
+        opacity="0.85"
+      />
+      {/* Texto circular superior */}
+      <path id="arcTop" d="M 15,60 A 45,45 0 0,1 105,60" fill="none" />
+      <text fontSize="7.5" fontFamily="'Georgia', serif" fill="#7a1a1a" fontWeight="600" letterSpacing="1.5">
+        <textPath href="#arcTop" startOffset="8%">SISTEMA INTEGRADO DE INCENDIOS</textPath>
+      </text>
+      {/* Texto circular inferior */}
+      <path id="arcBot" d="M 15,62 A 45,45 0 0,0 105,62" fill="none" />
+      <text fontSize="7.5" fontFamily="'Georgia', serif" fill="#7a1a1a" fontWeight="600" letterSpacing="2">
+        <textPath href="#arcBot" startOffset="22%">SIFIRE · CHILE</textPath>
+      </text>
+    </svg>
   );
 }
 
-/* ── Main component ──────────────────────────────────────────── */
+/* ── Membrete de oficio ──────────────────────────────────────── */
+function MembreteLinea() {
+  return (
+    <div style={{
+      display: "flex", alignItems: "center", gap: 10,
+      width: "100%", maxWidth: 540, marginBottom: 4,
+    }}>
+      <div style={{ flex: 1, height: 2, background: "#b22222" }} />
+      <div style={{ width: 8, height: 8, background: "#b22222", borderRadius: "50%" }} />
+      <div style={{ flex: 1, height: 2, background: "#b22222" }} />
+    </div>
+  );
+}
+
+/* ── Componente principal ────────────────────────────────────── */
 export default function NotFound() {
-  const canvasRef = useRef(null);
-  const navigate  = useNavigate();
-  const [count, setCount] = useState(8);
+  const navigate = useNavigate();
+  const [count, setCount] = useState(12);
+  const [stamp, setStamp] = useState(false);
 
-  useFireCanvas(canvasRef);
-
-  /* countdown to redirect */
+  /* Cuenta regresiva */
   useEffect(() => {
     if (count <= 0) { navigate("/"); return; }
     const t = setTimeout(() => setCount(c => c - 1), 1000);
     return () => clearTimeout(t);
   }, [count, navigate]);
 
+  /* Animación del sello al montar */
+  useEffect(() => {
+    const t = setTimeout(() => setStamp(true), 600);
+    return () => clearTimeout(t);
+  }, []);
+
+  const today = new Date().toLocaleDateString("es-CL", {
+    day: "2-digit", month: "long", year: "numeric",
+  });
+
   return (
     <>
-      {/* ── inline styles (no Tailwind dependency for this page) ── */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Inter:wght@400;500;600&display=swap');
 
-        .nf-root {
-          position: relative;
+        .muni-root {
           min-height: 100dvh;
-          background: #0a0501;
+          background: #f5f0e8;
+          background-image:
+            repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,140,100,0.07) 28px),
+            repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(180,140,100,0.07) 28px);
           display: flex;
-          flex-direction: column;
           align-items: center;
           justify-content: center;
-          overflow: hidden;
+          padding: 2rem 1rem;
           font-family: 'Inter', sans-serif;
-          color: #f5e6d0;
         }
 
-        /* ember canvas */
-        .nf-canvas {
-          position: absolute;
-          inset: 0;
+        .muni-oficio {
+          background: #fffdf7;
+          border: 1px solid #d4b896;
+          border-top: 5px solid #b22222;
+          box-shadow:
+            0 2px 8px rgba(0,0,0,0.10),
+            0 12px 40px rgba(0,0,0,0.07),
+            inset 0 0 0 6px rgba(178,34,34,0.03);
           width: 100%;
-          height: 100%;
-          pointer-events: none;
-          z-index: 0;
-        }
-
-        /* radial glow floor */
-        .nf-root::before {
-          content: '';
-          position: absolute;
-          bottom: -10%;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 80vw;
-          height: 40vh;
-          background: radial-gradient(ellipse at center bottom,
-            rgba(255,100,10,0.35) 0%,
-            rgba(200,40,0,0.15) 40%,
-            transparent 70%);
-          pointer-events: none;
-          z-index: 0;
-          animation: pulseGlow 2.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-          from { opacity: 0.7; transform: translateX(-50%) scaleX(1); }
-          to   { opacity: 1;   transform: translateX(-50%) scaleX(1.08); }
-        }
-
-        /* ── content wrapper ── */
-        .nf-content {
+          max-width: 620px;
+          padding: 2.5rem 2.8rem 2rem;
           position: relative;
-          z-index: 2;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 1.5rem;
-          text-align: center;
-          padding: 2rem;
+          animation: aparece 0.5s ease both;
         }
 
-        /* ── 404 heading ── */
-        .nf-headline {
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(7rem, 22vw, 16rem);
-          line-height: 0.9;
-          letter-spacing: 0.05em;
-          background: linear-gradient(180deg,
-            #fff8e1 0%,
-            #ffcc44 25%,
-            #ff7a00 55%,
-            #cc2200 80%,
-            #5a0a00 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          filter: drop-shadow(0 0 30px rgba(255,120,0,0.6))
-                  drop-shadow(0 0 60px rgba(255,60,0,0.35));
-          display: flex;
-          gap: 0.05em;
-          user-select: none;
-        }
-
-        /* each digit: shimmer + flicker */
-        .burning-digit {
-          display: inline-block;
-          animation: flicker 1.8s ease-in-out infinite alternate,
-                     shimmer 3s ease-in-out infinite;
-        }
-
-        @keyframes flicker {
-          0%   { filter: brightness(1)   drop-shadow(0 0 20px rgba(255,140,0,0.9)); }
-          25%  { filter: brightness(1.1) drop-shadow(0 0 35px rgba(255,80,0,1)); }
-          50%  { filter: brightness(0.9) drop-shadow(0 0 15px rgba(200,40,0,0.7)); }
-          75%  { filter: brightness(1.2) drop-shadow(0 0 40px rgba(255,160,0,1)); }
-          100% { filter: brightness(1)   drop-shadow(0 0 25px rgba(255,100,0,0.8)); }
-        }
-
-        @keyframes shimmer {
-          0%, 100% { background-position: center top; }
-          50%       { background-position: center 30%; }
-        }
-
-        /* ── fire SVG waves at bottom of the 404 text ── */
-        .nf-flames {
-          width: clamp(300px, 60vw, 700px);
-          margin-top: -2.5rem;
-          filter: drop-shadow(0 0 12px rgba(255,100,0,0.7));
-          animation: swayFlames 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes swayFlames {
-          from { transform: scaleX(1)    scaleY(1); }
-          to   { transform: scaleX(1.04) scaleY(1.03); }
-        }
-
-        /* ── subtitle ── */
-        .nf-subtitle {
-          font-size: clamp(1rem, 2vw, 1.25rem);
-          color: #d4956a;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          font-weight: 600;
-          animation: fadeUp 0.8s ease both;
-          animation-delay: 0.3s;
-        }
-
-        .nf-body {
-          max-width: 38ch;
-          font-size: clamp(0.9rem, 1.5vw, 1.05rem);
-          color: #9a7060;
-          line-height: 1.6;
-          animation: fadeUp 0.8s ease both;
-          animation-delay: 0.5s;
-        }
-
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(16px); }
+        @keyframes aparece {
+          from { opacity: 0; transform: translateY(18px); }
           to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ── countdown bar ── */
-        .nf-countdown-wrap {
-          width: clamp(200px, 40vw, 340px);
-          animation: fadeUp 0.8s ease both;
-          animation-delay: 0.7s;
+        /* Marca de agua */
+        .muni-oficio::before {
+          content: 'SIFIRE';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) rotate(-30deg);
+          font-size: 7rem;
+          font-family: 'IM Fell English', serif;
+          color: rgba(178,34,34,0.055);
+          pointer-events: none;
+          letter-spacing: 0.15em;
+          white-space: nowrap;
+          font-weight: 700;
+          user-select: none;
         }
 
-        .nf-countdown-label {
+        .muni-header {
           display: flex;
+          align-items: flex-start;
           justify-content: space-between;
-          font-size: 0.78rem;
-          color: #7a5040;
-          margin-bottom: 0.4rem;
+          margin-bottom: 1.4rem;
+          gap: 1rem;
+        }
+
+        .muni-header-left {
+          display: flex;
+          flex-direction: column;
+          gap: 0.15rem;
+        }
+
+        .muni-org {
+          font-family: 'IM Fell English', serif;
+          font-size: 0.72rem;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #7a1a1a;
+        }
+
+        .muni-titulo {
+          font-family: 'IM Fell English', serif;
+          font-size: 1.05rem;
+          color: #2c1a1a;
+          font-weight: 700;
+          line-height: 1.3;
+        }
+
+        .muni-folio {
+          font-size: 0.7rem;
+          color: #9a7060;
+          letter-spacing: 0.06em;
+          margin-top: 0.25rem;
+        }
+
+        /* Sello con efecto stamp */
+        .muni-sello-wrap {
+          transition: transform 0.4s cubic-bezier(0.23,1.5,0.32,1), opacity 0.3s ease;
+          transform: scale(${stamp ? "1" : "0.3"}) rotate(${stamp ? "-12" : "0"}deg);
+          opacity: ${stamp ? "1" : "0"};
+          flex-shrink: 0;
+        }
+        .muni-sello-wrap.visible {
+          transform: scale(1) rotate(-12deg);
+          opacity: 1;
+        }
+
+        .muni-divisor {
+          height: 1px;
+          background: linear-gradient(to right, #b22222, #d4b896 60%, transparent);
+          margin: 0.8rem 0 1.2rem;
+        }
+
+        .muni-asunto-label {
+          font-size: 0.68rem;
+          text-transform: uppercase;
+          letter-spacing: 0.14em;
+          color: #9a7060;
+          font-weight: 600;
+          margin-bottom: 0.25rem;
+        }
+
+        .muni-asunto-valor {
+          font-family: 'IM Fell English', serif;
+          font-size: 1.0rem;
+          color: #2c1a1a;
+          margin-bottom: 1.2rem;
+        }
+
+        .muni-codigo {
+          display: inline-block;
+          background: #b22222;
+          color: #fff;
+          font-family: 'IM Fell English', serif;
+          font-size: 4.5rem;
+          line-height: 1;
+          letter-spacing: 0.05em;
+          padding: 0.2rem 0.6rem;
+          margin-bottom: 0.3rem;
+        }
+
+        .muni-cuerpo {
+          font-size: 0.92rem;
+          color: #3c2a1a;
+          line-height: 1.75;
+          margin-bottom: 1.4rem;
+          border-left: 3px solid rgba(178,34,34,0.2);
+          padding-left: 1rem;
+        }
+
+        .muni-cuerpo strong {
+          color: #b22222;
+        }
+
+        .muni-tabla {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 0.8rem;
+          margin-bottom: 1.6rem;
+          color: #4a3020;
+        }
+        .muni-tabla th {
+          text-align: left;
+          padding: 0.4rem 0.6rem;
+          background: rgba(178,34,34,0.06);
+          font-weight: 600;
           letter-spacing: 0.05em;
           text-transform: uppercase;
+          font-size: 0.68rem;
+          border-bottom: 1px solid #d4b896;
+        }
+        .muni-tabla td {
+          padding: 0.4rem 0.6rem;
+          border-bottom: 1px solid rgba(212,184,150,0.5);
+        }
+        .muni-tabla tr:last-child td { border-bottom: none; }
+
+        .muni-countdown-label {
+          font-size: 0.72rem;
+          color: #9a7060;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          margin-bottom: 0.35rem;
+          display: flex;
+          justify-content: space-between;
         }
 
-        .nf-bar-bg {
-          height: 6px;
-          background: rgba(255,255,255,0.07);
+        .muni-barra-bg {
+          height: 5px;
+          background: rgba(178,34,34,0.1);
           border-radius: 999px;
           overflow: hidden;
+          margin-bottom: 1.5rem;
         }
-
-        .nf-bar-fill {
+        .muni-barra-fill {
           height: 100%;
+          background: linear-gradient(90deg, #b22222, #e05020);
           border-radius: 999px;
-          background: linear-gradient(90deg, #ff4500, #ffbb00);
-          box-shadow: 0 0 8px rgba(255,100,0,0.7);
-          transition: width 0.9s linear;
+          transition: width 0.95s linear;
         }
 
-        /* ── buttons ── */
-        .nf-actions {
+        .muni-acciones {
           display: flex;
-          gap: 1rem;
+          gap: 0.75rem;
           flex-wrap: wrap;
-          justify-content: center;
-          animation: fadeUp 0.8s ease both;
-          animation-delay: 0.9s;
         }
 
-        .nf-btn {
-          padding: 0.65rem 1.5rem;
-          border-radius: 8px;
-          font-family: 'Inter', sans-serif;
-          font-size: 0.9rem;
+        .muni-btn {
+          padding: 0.55rem 1.3rem;
+          font-size: 0.85rem;
           font-weight: 600;
+          border-radius: 4px;
           cursor: pointer;
           border: none;
+          font-family: 'Inter', sans-serif;
           transition: transform 0.15s ease, box-shadow 0.15s ease;
+          letter-spacing: 0.02em;
         }
-        .nf-btn:hover  { transform: translateY(-2px); }
-        .nf-btn:active { transform: translateY(0); }
+        .muni-btn:hover  { transform: translateY(-1px); }
+        .muni-btn:active { transform: translateY(0); }
 
-        .nf-btn-primary {
-          background: linear-gradient(135deg, #ff6a00, #ee0979);
+        .muni-btn-primary {
+          background: #b22222;
           color: #fff;
-          box-shadow: 0 4px 20px rgba(255,80,0,0.45);
+          box-shadow: 0 2px 10px rgba(178,34,34,0.35);
         }
-        .nf-btn-primary:hover {
-          box-shadow: 0 6px 28px rgba(255,80,0,0.65);
+        .muni-btn-primary:hover { background: #8b1a1a; box-shadow: 0 4px 16px rgba(178,34,34,0.5); }
+
+        .muni-btn-ghost {
+          background: transparent;
+          color: #7a4030;
+          border: 1px solid #d4b896;
+        }
+        .muni-btn-ghost:hover { background: rgba(178,34,34,0.06); border-color: #b22222; }
+
+        .muni-firma {
+          margin-top: 1.8rem;
+          font-size: 0.72rem;
+          color: #9a8070;
+          border-top: 1px solid #d4b896;
+          padding-top: 0.8rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          gap: 1rem;
+          flex-wrap: wrap;
         }
 
-        .nf-btn-ghost {
-          background: rgba(255,255,255,0.05);
-          color: #c8896a;
-          border: 1px solid rgba(255,120,0,0.2);
-        }
-        .nf-btn-ghost:hover {
-          background: rgba(255,120,0,0.1);
-          border-color: rgba(255,120,0,0.4);
-        }
-
-        /* ── smoke wisps at top ── */
-        .nf-smoke {
-          position: absolute;
-          top: 0; left: 0; right: 0;
-          height: 35%;
-          background: linear-gradient(to bottom,
-            rgba(10,5,1,0.9) 0%,
-            transparent 100%);
-          pointer-events: none;
-          z-index: 1;
+        @media (max-width: 520px) {
+          .muni-oficio { padding: 1.6rem 1.4rem 1.4rem; }
+          .muni-codigo { font-size: 3rem; }
+          .muni-header { flex-direction: column-reverse; align-items: flex-start; }
+          .muni-sello-wrap { align-self: flex-end; }
         }
       `}</style>
 
-      <div className="nf-root">
-        <canvas ref={canvasRef} className="nf-canvas" />
-        <div className="nf-smoke" />
+      <div className="muni-root">
+        <article className="muni-oficio" role="main">
 
-        <div className="nf-content">
-          {/* ── big 404 ── */}
-          <div className="nf-headline" aria-label="404">
-            <BurningDigit char="4" delay={0} />
-            <BurningDigit char="0" delay={0.25} />
-            <BurningDigit char="4" delay={0.5} />
+          {/* ── Encabezado tipo membrete ── */}
+          <div className="muni-header">
+            <div className="muni-header-left">
+              <span className="muni-org">República de Chile · SIFIRE</span>
+              <span className="muni-titulo">Sistema Integrado de<br />Gestión de Incendios Forestales</span>
+              <span className="muni-folio">Folio: ERR-404 · {today}</span>
+            </div>
+            <div className={`muni-sello-wrap${stamp ? " visible" : ""}`}>
+              <SelloInstitucional />
+            </div>
           </div>
 
-          {/* inline SVG fire waves */}
-          <svg
-            className="nf-flames"
-            viewBox="0 0 700 80"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <defs>
-              <linearGradient id="fg1" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stopColor="#ffdd44" stopOpacity="0.9"/>
-                <stop offset="60%" stopColor="#ff5500" stopOpacity="0.7"/>
-                <stop offset="100%" stopColor="#cc1100" stopOpacity="0"/>
-              </linearGradient>
-              <linearGradient id="fg2" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stopColor="#fff0a0" stopOpacity="0.8"/>
-                <stop offset="50%" stopColor="#ff8800" stopOpacity="0.5"/>
-                <stop offset="100%" stopColor="#cc1100" stopOpacity="0"/>
-              </linearGradient>
-            </defs>
-            {/* back flame layer */}
-            <path
-              fill="url(#fg1)"
-              d="M0,80 C30,40 60,10 90,35 C120,60 150,5 180,30
-                 C210,55 240,0  270,25 C300,50 330,5  360,30
-                 C390,55 420,0  450,25 C480,50 510,10 540,35
-                 C570,60 600,5  630,30 C660,55 680,20 700,40 L700,80 Z"
-            />
-            {/* front flame layer */}
-            <path
-              fill="url(#fg2)"
-              d="M0,80 C20,55 50,20 80,45 C110,70 140,15 170,40
-                 C200,65 230,10 260,35 C290,60 320,15 350,40
-                 C380,65 410,10 440,35 C470,60 500,20 530,45
-                 C560,70 590,15 620,40 C650,65 675,30 700,50 L700,80 Z"
-            />
-          </svg>
+          <MembreteLinea />
 
-          <p className="nf-subtitle">Página no encontrada</p>
-          <p className="nf-body">
-            Esta ruta se incendió antes de que pudieras llegar.
-            El sistema SIFIRE no pudo localizar lo que buscas.
+          {/* ── Asunto ── */}
+          <div className="muni-asunto-label">Materia del documento</div>
+          <div className="muni-asunto-valor">
+            Notificación de recurso no localizado en el sistema
+          </div>
+
+          {/* ── Código de error ── */}
+          <div style={{ textAlign: "center", marginBottom: "1rem" }}>
+            <span className="muni-codigo" aria-label="Error 404">404</span>
+          </div>
+
+          <div className="muni-divisor" />
+
+          {/* ── Cuerpo del oficio ── */}
+          <p className="muni-cuerpo">
+            Por medio del presente, el sistema <strong>SIFIRE</strong> informa a quien
+            corresponda que la ruta solicitada <strong>no fue hallada</strong> en los
+            registros del servidor institucional. La página o recurso indicado no
+            existe, fue removido o se encuentra fuera de la jurisdicción de este
+            sistema. Se recomienda verificar la URL ingresada o retornar al inicio.
           </p>
 
-          {/* countdown */}
-          <div className="nf-countdown-wrap">
-            <div className="nf-countdown-label">
-              <span>Redirigiendo al inicio</span>
-              <span>{count}s</span>
+          {/* ── Tabla de diagnóstico ── */}
+          <table className="muni-tabla" aria-label="Detalles del error">
+            <thead>
+              <tr>
+                <th>Campo</th>
+                <th>Descripción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Código HTTP</td>
+                <td>404 Not Found</td>
+              </tr>
+              <tr>
+                <td>Clasificación</td>
+                <td>Recurso inexistente o ruta inválida</td>
+              </tr>
+              <tr>
+                <td>Sistema afectado</td>
+                <td>Frontend SIFIRE — módulo de navegación</td>
+              </tr>
+              <tr>
+                <td>Resolución sugerida</td>
+                <td>Retornar al inicio o revisar la URL</td>
+              </tr>
+            </tbody>
+          </table>
+
+          {/* ── Barra de cuenta regresiva ── */}
+          <div className="muni-countdown-label">
+            <span>Redirigiendo al inicio automáticamente</span>
+            <span>{count}s</span>
+          </div>
+          <div className="muni-barra-bg">
+            <div
+              className="muni-barra-fill"
+              style={{ width: `${(count / 12) * 100}%` }}
+            />
+          </div>
+
+          {/* ── Botones ── */}
+          <div className="muni-acciones">
+            <button className="muni-btn muni-btn-primary" onClick={() => navigate("/")}>
+              🏠 Volver al Inicio
+            </button>
+            <button className="muni-btn muni-btn-ghost" onClick={() => navigate(-1)}>
+              ← Página Anterior
+            </button>
+          </div>
+
+          {/* ── Firma institucional ── */}
+          <div className="muni-firma">
+            <div>
+              <div style={{ fontWeight: 600, color: "#5a3020" }}>Secretaría Técnica — SIFIRE</div>
+              <div>Gestión de Emergencias e Incendios Forestales</div>
             </div>
-            <div className="nf-bar-bg">
-              <div
-                className="nf-bar-fill"
-                style={{ width: `${(count / 8) * 100}%` }}
-              />
+            <div style={{ textAlign: "right" }}>
+              <div>Generado automáticamente</div>
+              <div style={{ fontSize: "0.65rem" }}>Este documento no requiere firma ni timbre</div>
             </div>
           </div>
 
-          {/* actions */}
-          <div className="nf-actions">
-            <button className="nf-btn nf-btn-primary" onClick={() => navigate("/")}>
-              🏠 Volver al inicio
-            </button>
-            <button className="nf-btn nf-btn-ghost" onClick={() => navigate(-1)}>
-              ← Página anterior
-            </button>
-          </div>
-        </div>
+        </article>
       </div>
     </>
   );
