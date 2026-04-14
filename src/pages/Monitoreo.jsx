@@ -38,7 +38,7 @@ export default function MapaIncendios() {
 
         {reportesMock.map((reporte) => (
           <>
-            {/* Círculo de zona de impacto */}
+            {/*Dibujar el circulo de zona de impacto */}
             <Circle
               key={`zona-${reporte.id}`}
               center={[reporte.lat, reporte.lng]}
