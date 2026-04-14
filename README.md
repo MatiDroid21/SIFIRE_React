@@ -10,7 +10,7 @@
 |---|---|
 | **Asignatura** | Desarrollo Fullstack III — DSY1106 / 304V |
 | **Docente** | Roberto Andrés Moreno Pérez |
-| **Institución** | Instituto AIEP |
+| **Institución** | Duoc UC San Joaquin |
 | **Equipo** | Keiton Chaves · Matías Chávez · Sergio Soto |
 | **Año** | 2026 |
 
