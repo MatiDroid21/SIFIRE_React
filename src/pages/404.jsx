@@ -36,7 +36,7 @@ export default function NotFound() {
         <div className="nf-code" aria-label="Error 404">404</div>
         <h1 className="nf-title">Página no encontrada</h1>
         <p className="nf-desc">
-          La ruta que ingresaste no existe en SIFIRE. Puede que haya sido
+          La ruta que ingresaste se incendió. Puede que haya sido
           movida, eliminada, o simplemente escribiste mal la URL.
         </p>
 
