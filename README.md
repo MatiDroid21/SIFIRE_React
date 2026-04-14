@@ -1,16 +1,34 @@
-# React + Vite
+# 🔥 SIFIRE — Sistema Inteligente de Fuego y Respuesta a Emergencias
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **Plataforma tecnológica municipal basada en microservicios para la gestión, detección y respuesta ante incendios forestales y urbanos.**
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📋 Información Académica
 
-## React Compiler
+| Campo | Detalle |
+|---|---|
+| **Asignatura** | Desarrollo Fullstack III — DSY1106 / 304V |
+| **Docente** | Roberto Andrés Moreno Pérez |
+| **Institución** | Duoc UC San Joaquin |
+| **Equipo** | Keiton Chaves · Matías Chávez · Sergio Soto |
+| **Año** | 2026 |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📌 Descripción General
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+La **Municipalidad Valle del Sol**, a través de su Subdirección de Gestión de Emergencias y Prevención de Desastres, identificó la necesidad urgente de modernizar sus sistemas de respuesta ante incendios. Actualmente, los reportes llegan mediante llamadas telefónicas, redes sociales e informes manuales, lo que genera demoras críticas en la respuesta.
+
+**SIFIRE** es una plataforma tecnológica basada en microservicios que centraliza la información relacionada con incendios y emergencias, facilitando la detección temprana y la toma de decisiones en tiempo real. El sistema está diseñado bajo principios de **alta disponibilidad**, **escalabilidad horizontal** y **ética en el diseño** (*Ethics by Design*).
+
+### Problemática que resuelve
+
+- ❌ Falta de herramientas digitales para reportar incendios en tiempo real
+- ❌ Dificultad para visualizar la ubicación exacta de focos de incendio
+- ❌ Escasa integración entre la municipalidad y organismos de emergencia
+- ❌ Ausencia de mecanismos automatizados de alerta a la población
+- ❌ Falta de base de datos histórica para análisis de patrones de recurrencia
+---
+
+Por el momento se encuentra en desarrollo, pero a lo largo del semestre estarémos señalando sus mejoras.
