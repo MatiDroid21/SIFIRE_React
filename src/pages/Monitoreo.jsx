@@ -14,9 +14,9 @@ L.Icon.Default.mergeOptions({ iconRetinaUrl, iconUrl, shadowUrl })
 
 // con esto te haces unos datos de prueba
 const reportesMock = [
-  { id: 1, lat: -33.45, lng: -70.65, tipo: 'incendio', nivel: 'alto',    titulo: 'Incendio Cerro San Cristóbal' },
-  { id: 2, lat: -33.47, lng: -70.60, tipo: 'humo',     nivel: 'medio',   titulo: 'Columna de humo Lo Barnechea' },
-  { id: 3, lat: -33.43, lng: -70.70, tipo: 'incendio', nivel: 'bajo',    titulo: 'Foco menor Pudahuel' },
+  { id: 1, lat: -33.45, lng: -70.65, tipo: 'incendio', nivel: 'alto', titulo: 'Incendio Cerro San Cristóbal' },
+  { id: 2, lat: -33.47, lng: -70.60, tipo: 'humo', nivel: 'medio', titulo: 'Columna de humo Lo Barnechea' },
+  { id: 3, lat: -33.43, lng: -70.70, tipo: 'incendio', nivel: 'bajo', titulo: 'Foco menor Pudahuel' },
   { id: 4, lat: -33.46, lng: -70.62, tipo: 'incendio', nivel: 'resuelto', titulo: 'Incendio Resuelto Vitacura' },
 ]
 
@@ -32,7 +32,7 @@ export default function MapaIncendios() {
       >
         {/* con esto imitas el modo oscuro del sosafe*/}
         <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
           attribution='&copy; <a href="https://carto.com/">CARTO</a>'
         />
 
@@ -61,7 +61,7 @@ export default function MapaIncendios() {
           </>
         ))}
       </MapContainer>
-        <FooterComponent />
+      <FooterComponent />
     </div>
   )
 }
