@@ -7,6 +7,7 @@ import Registro from './pages/Registro'
 import NotFound from './pages/404'
 import Footer from './components/FooterComponent'
 import './components/FooterComponent.css'
+import Dashboard from './pages/Dashboard'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/monitoreo" element={<Monitoreo />} />
           <Route path="/alertas"   element={<Alertas />} />
           <Route path="*"          element={<NotFound />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </main>
       <Footer />

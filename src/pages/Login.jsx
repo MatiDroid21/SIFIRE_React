@@ -10,7 +10,7 @@ const USUARIOS_DEMO = [
 
 // A cada rol le corresponde una ruta distinta
 const RUTA_POR_ROL = {
-  CIUDADANO:   '/reportes/crear',
+  CIUDADANO:   '/reportes',
   BRIGADISTA:  '/monitoreo',
   FUNCIONARIO: '/dashboard',
 };
