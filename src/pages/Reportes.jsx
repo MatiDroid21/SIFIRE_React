@@ -43,7 +43,8 @@ export default function Reportes() {
     setShowForm(false)
     setExito(true)
     setTimeout(() => setExito(false), 3000)
-    // TODO: reemplazar por axios.post('/api/reportes', form)
+// despues habría que enviar esto al backend con → axios.post('/api/reportes', nuevo) y recargar la lista con GET /api/reportes
+// asi para que amarre XD.
   }
 
   return (
