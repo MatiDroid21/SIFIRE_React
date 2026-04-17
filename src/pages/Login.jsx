@@ -1,79 +1,73 @@
-import { useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useState } from 'react'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
-// Usuarios de prueba por el momento
 const USUARIOS_DEMO = [
   { email: 'ciudadano@demo.cl',   password: '12345678', tipo: 'CIUDADANO',   nombre: 'María González' },
-  { email: 'brigadista@demo.cl',  password: '12345678', tipo: 'BRIGADISTA',  nombre: 'Carlos Rojas' },
-  { email: 'funcionario@demo.cl', password: '12345678', tipo: 'FUNCIONARIO', nombre: 'Ana Martínez' },
-];
+  { email: 'brigadista@demo.cl',  password: '12345678', tipo: 'BRIGADISTA',  nombre: 'Carlos Rojas'   },
+  { email: 'funcionario@demo.cl', password: '12345678', tipo: 'FUNCIONARIO', nombre: 'Ana Martínez'   },
+]
 
-// A cada rol le corresponde una ruta distinta
 const RUTA_POR_ROL = {
   CIUDADANO:   '/reportes',
   BRIGADISTA:  '/monitoreo',
   FUNCIONARIO: '/dashboard',
-};
+}
 
 export default function Login() {
-  const navigate  = useNavigate();
-  const location  = useLocation();
+  const { login } = useAuth()
+  const navigate   = useNavigate()
+  const location   = useLocation()
 
-  const [form, setForm]       = useState({ email: '', password: '' });
-  const [errors, setErrors]   = useState({});
-  const [loading, setLoading] = useState(false);
-  const [loginError, setLoginError] = useState('');
+  const [form, setForm]             = useState({ email: '', password: '' })
+  const [errors, setErrors]         = useState({})
+  const [loading, setLoading]       = useState(false)
+  const [loginError, setLoginError] = useState('')
 
-  // Muestra banner si viene de registro exitoso
-  const registradoOk = location.state?.registrado;
+  const registradoOk = location.state?.registrado
 
-  // Validación básica del formulario
   const validate = () => {
-    const e = {};
+    const e = {}
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      e.email = 'Ingresa un correo válido.';
+      e.email = 'Ingresa un correo válido.'
     if (!form.password)
-      e.password = 'La contraseña es requerida.';
-    return e;
-  };
+      e.password = 'La contraseña es requerida.'
+    return e
+  }
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
-    if (errors[name])  setErrors(prev => ({ ...prev, [name]: '' }));
-    if (loginError)    setLoginError('');
-  };
-
-  // TODO: conectar con POST /api/usuarios/login
-  // o eso se supone eso que lo vea el backend, no? xd
+    const { name, value } = e.target
+    setForm(prev => ({ ...prev, [name]: value }))
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }))
+    if (loginError)   setLoginError('')
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const validationErrors = validate();
+    const validationErrors = validate()
     if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
+      setErrors(validationErrors)
+      return
     }
 
-    setLoading(true);
-    await new Promise(r => setTimeout(r, 700)); // simula delay visual
+    setLoading(true)
+    await new Promise(r => setTimeout(r, 700))
 
-    const usuario = USUARIOS_DEMO.find(
-      u => u.email === form.email && u.password === form.password
-    );
+    const resultado = login(form.email, form.password)
 
-    setLoading(false);
+    setLoading(false)
 
-    if (!usuario) {
-      setLoginError('Correo o contraseña incorrectos.');
-      return;
+    if (!resultado.ok) {
+      setLoginError(resultado.mensaje)
+      return
     }
 
-    // Guarda en sessionStorage para que el layout sepa quién está logueado
-    sessionStorage.setItem('usuario', JSON.stringify(usuario));
-    navigate(RUTA_POR_ROL[usuario.tipo]);
-  };
+   
+    const usuario = resultado.usuario
+    sessionStorage.setItem('usuario', JSON.stringify(usuario))
+    navigate(RUTA_POR_ROL[usuario.rol])  
+  } 
 
   return (
     <div className="sifire-login-page min-vh-100 d-flex align-items-center bg-light">
@@ -81,7 +75,6 @@ export default function Login() {
         <div className="row justify-content-center">
           <div className="col-12 col-md-8 col-lg-4">
 
-            {/* Cabecera */}
             <div className="text-center mb-4">
               <div className="fs-1 mb-2">🔥</div>
               <h1 className="fs-4 fw-bold text-dark mb-1">SIFIRE</h1>
@@ -90,26 +83,22 @@ export default function Login() {
               </p>
             </div>
 
-            {/* Banner registro exitoso */}
             {registradoOk && (
               <div className="alert alert-success py-2 small text-center" role="alert">
-               Cuenta creada. Ya puedes iniciar sesión.
+                Cuenta creada. Ya puedes iniciar sesión.
               </div>
             )}
 
-            {/* Error de credenciales */}
             {loginError && (
               <div className="alert alert-danger py-2 small text-center" role="alert">
                 {loginError}
               </div>
             )}
 
-            {/* Formulario */}
             <div className="card border-0 shadow-sm">
               <div className="card-body p-4">
                 <form onSubmit={handleSubmit} noValidate>
 
-                  {/* Email */}
                   <div className="mb-3">
                     <label htmlFor="email" className="form-label small fw-semibold">
                       Correo electrónico
@@ -124,7 +113,6 @@ export default function Login() {
                     {errors.email && <div className="invalid-feedback">{errors.email}</div>}
                   </div>
 
-                  {/* Contraseña */}
                   <div className="mb-4">
                     <label htmlFor="password" className="form-label small fw-semibold">
                       Contraseña
@@ -139,7 +127,6 @@ export default function Login() {
                     {errors.password && <div className="invalid-feedback">{errors.password}</div>}
                   </div>
 
-                  {/* Submit */}
                   <button
                     type="submit"
                     disabled={loading}
@@ -155,7 +142,6 @@ export default function Login() {
               </div>
             </div>
 
-            {/* Accesos rápidos demo — solo esta semana */}
             <div className="mt-3 p-3 bg-white rounded-3 border border-secondary-subtle">
               <p className="text-muted small text-center mb-2 fw-semibold">
                 Accesos rápidos (demo)
@@ -188,5 +174,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-  );
-}
+  )
+} 

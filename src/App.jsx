@@ -20,8 +20,8 @@ function App() {
           <Route path="/reportes"  element={<Reportes />} />
           <Route path="/monitoreo" element={<Monitoreo />} />
           <Route path="/alertas"   element={<Alertas />} />
-          <Route path="*"          element={<NotFound />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="*"          element={<NotFound />} />
         </Routes>
       </main>
       <Footer />

@@ -3,9 +3,9 @@ import FooterComponent from '../components/FooterComponent'
 
 // todo esto es una demo, despues reemplazar por datos reales de GET /api/reportes
 const reportesMock = [
-  { id: 1, titulo: 'Incendio Cerro San Cristóbal', nivel: 'ALTO',  estado: 'EN_PROCESO', fecha: '15/04/2026', origen: 'FUNCIONARIO' },
-  { id: 2, titulo: 'Foco Lo Barnechea',            nivel: 'MEDIO', estado: 'PENDIENTE',  fecha: '15/04/2026', origen: 'CIUDADANO'   },
-  { id: 3, titulo: 'Humo sector Pudahuel',         nivel: 'BAJO',  estado: 'PENDIENTE',  fecha: '15/04/2026', origen: 'BRIGADISTA'  },
+  { id: 1, titulo: 'Incendio Cerro San Cristóbal', nivel: 'ALTO',  estado: 'EN_PROCESO', fecha: '15-04-2026', origen: 'FUNCIONARIO', descripcion: 'Se reporta un incendio activo con gran cantidad de humo visible desde varios puntos de la ciudad. Se recomienda evitar la zona y seguir las indicaciones de las autoridades.' },
+  { id: 2, titulo: 'Foco Lo Barnechea',            nivel: 'MEDIO', estado: 'PENDIENTE',  fecha: '15-04-2026', origen: 'CIUDADANO', descripcion: 'Vecinos reportan un posible foco de incendio en el sector de Lo Barnechea, cerca de áreas verdes. Se observa humo pero no se han confirmado llamas.' },
+  { id: 3, titulo: 'Humo sector Pudahuel',         nivel: 'BAJO',  estado: 'PENDIENTE',  fecha: '15-04-2026', origen: 'BRIGADISTA', descripcion: 'Se observa humo en el sector de Pudahuel, pero no se han confirmado llamas.' },
 ]
 
 // Colores para estados y niveles, para mostrar en la tabla a nivel de prueba
@@ -36,6 +36,7 @@ export default function Reportes() {
       estado: 'PENDIENTE',
       fecha: new Date().toLocaleDateString('es-CL'),
       origen: 'CIUDADANO',
+      descripcion: form.descripcion
     }
     setReportes([nuevo, ...reportes])
     setForm(initialForm)
@@ -131,7 +132,7 @@ export default function Reportes() {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ backgroundColor: '#f8fafc' }}>
-              {['#', 'Título', 'Nivel', 'Estado', 'Origen', 'Fecha'].map(h => (
+              {['#', 'Título', 'Nivel', 'Estado', 'Origen', 'Descripción','Creación Reporte'].map(h => (
                 <th key={h} style={{ padding: '0.8rem 1.5rem', textAlign: 'left', fontSize: '0.8rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase' }}>
                   {h}
                 </th>
@@ -152,7 +153,9 @@ export default function Reportes() {
                   </span>
                 </td>
                 <td style={{ padding: '1rem 1.5rem', color: '#64748b', fontSize: '0.85rem' }}>{r.origen}</td>
+                <td style={{ padding: '1rem 1.5rem', color: '#64748b', fontSize: '0.85rem' }}>{r.descripcion}</td>
                 <td style={{ padding: '1rem 1.5rem', color: '#64748b', fontSize: '0.85rem' }}>{r.fecha}</td>
+                
               </tr>
             ))}
           </tbody>
