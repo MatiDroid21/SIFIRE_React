@@ -6,7 +6,7 @@ import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
 
-// fix bug leaflet + vite
+// se arregla bug leaflet + vite
 const iconDefault = L.icon({ iconUrl, shadowUrl, iconSize: [25, 41], iconAnchor: [12, 41] })
 
 const reportesMock = [
@@ -62,7 +62,7 @@ export default function Reportes() {
     setShowForm(false)
     setExito(true)
     setTimeout(() => setExito(false), 3000)
-    // TODO: axios.post('/bff/reportes', { ...nuevo, latitud: form.latitud, longitud: form.longitud })
+    // remplazar despues con: axios.post('/bff/reportes', { ...nuevo, latitud: form.latitud, longitud: form.longitud })
   }
 
   return (
