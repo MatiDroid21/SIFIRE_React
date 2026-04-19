@@ -10,7 +10,7 @@ const USUARIOS_DEMO = [
 
 const RUTA_POR_ROL = {
   CIUDADANO:   '/reportes',
-  BRIGADISTA:  '/monitoreo',
+  BRIGADISTA:  '/mis-asignaciones',
   FUNCIONARIO: '/dashboard',
 }
 
