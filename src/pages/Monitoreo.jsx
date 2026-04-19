@@ -25,8 +25,8 @@ export default function MapaIncendios() {
   return (
     <div style={{ height: '100vh', width: '100%' }}>
       <MapContainer
-        center={[-33.45, -70.65]}   // Santiago
-        zoom={11}
+        center={[-30.695, -70.958]}   // Valle Del Sol está aprox en -30.695, -70.958
+        zoom={12}
         style={{ height: '100%', width: '100%' }}
       >
         {/* con esto imitas el modo oscuro del sosafe*/}
