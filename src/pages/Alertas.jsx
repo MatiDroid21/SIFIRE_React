@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 const alertasMock = [
-  { id: 1, titulo: 'Evacuación Cerro San Cristóbal', mensaje: 'Se ordena evacuación preventiva del sector norte. Siga las instrucciones de los brigadistas.', estado: 'ENVIADA',   fecha: '15/04/2026 21:10', autor: 'Ana Martínez' },
+  { id: 1, titulo: 'Evacuación Centro Rad. Fleming', mensaje: 'Se ordena evacuación preventiva del sector norte. Lamentablemente Matias murió en el lugar XD', estado: 'ENVIADA',   fecha: '15/04/2026 21:10', autor: 'Sergio Perez' },
   { id: 2, titulo: 'Alerta Lo Barnechea',            mensaje: 'Foco activo en sector oriente. Evite la zona y manténgase informado.',                         estado: 'ENVIADA',   fecha: '15/04/2026 20:45', autor: 'Ana Martínez' },
   { id: 3, titulo: 'Aviso Pudahuel',                 mensaje: 'Foco menor detectado en el sector. Equipos en camino, situación bajo control.',                 estado: 'PENDIENTE', fecha: '15/04/2026 20:30', autor: 'Carlos Rojas'  },
   { id: 4, titulo: 'Alerta Las Condes',              mensaje: 'Se detectó humo en el sector oriente de Las Condes. Pendiente confirmación.',                   estado: 'PENDIENTE', fecha: '15/04/2026 19:55', autor: 'Carlos Rojas'  },

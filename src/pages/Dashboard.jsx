@@ -2,9 +2,9 @@ import { useState } from 'react'
 
 const kpisMock = [
   { label: 'Reportes Activos',   valor: 12, color: '#ef4444', icono: '🔥' },
-  { label: 'En Proceso',         valor: 5,  color: '#f97316', icono: '⚙️' },
+  { label: 'En Proceso',         valor: 5,  color: '#f97316', icono: '🔄' },
   { label: 'Brigadas Activas',   valor: 3,  color: '#3b82f6', icono: '🚒' },
-  { label: 'Controlados Hoy',    valor: 8,  color: '#22c55e', icono: '✅' },
+  { label: 'Controlados Hoy',    valor: 8,  color: '#22c55e', icono: '✔️' },
 ]
 
 const reportesRecientesMock = [
