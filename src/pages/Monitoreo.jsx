@@ -1,3 +1,4 @@
+import React from 'react'
 import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet'
 import { Icon } from 'leaflet'
 import FooterComponent from '../components/FooterComponent'
@@ -36,7 +37,7 @@ export default function MapaIncendios() {
         />
 
         {reportesMock.map((reporte) => (
-          <>
+          <React.Fragment key={reporte.id}>
             {/*Dibujar el circulo de zona de impacto */}
             <Circle
               key={`zona-${reporte.id}`}
@@ -57,7 +58,7 @@ export default function MapaIncendios() {
                 Nivel: {reporte.nivel}
               </Popup>
             </Marker>
-          </>
+          </React.Fragment>
         ))}
       </MapContainer>
       <FooterComponent />

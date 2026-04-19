@@ -7,6 +7,7 @@ import Registro           from './pages/Registro'
 import NotFound           from './pages/404'
 import Dashboard          from './pages/Dashboard'
 import GestionBrigadistas from './pages/GestionBrigadistas'
+import MisAsignaciones    from './pages/MisAsignaciones' 
 import Footer             from './components/FooterComponent'
 import NavbarComponent    from './components/NavbarComponent'
 import './components/FooterComponent.css'
@@ -19,19 +20,16 @@ function App() {
         <Routes>
 
           {/* Rutas públicas */}
-          <Route path="/"            element={<Login />} />
-          <Route path="/login"       element={<Login />} />
-          <Route path="/registro"    element={<Registro />} />
-
-          {/* Rutas de la app — sin guard hasta integrar el back */}
-          <Route path="/reportes"    element={<Reportes />} />
-          <Route path="/monitoreo"   element={<Monitoreo />} />
-          <Route path="/alertas"     element={<Alertas />} />
-          <Route path="/dashboard"   element={<Dashboard />} />
-          <Route path="/brigadistas" element={<GestionBrigadistas />} />
-
-          <Route path="*"            element={<NotFound />} />
-
+          <Route path="/"                element={<Login />} />
+          <Route path="/login"           element={<Login />} />
+          <Route path="/registro"        element={<Registro />} />
+          <Route path="/reportes"        element={<Reportes />} />
+          <Route path="/monitoreo"       element={<Monitoreo />} />
+          <Route path="/alertas"         element={<Alertas />} />
+          <Route path="/dashboard"       element={<Dashboard />} />
+          <Route path="/brigadistas"     element={<GestionBrigadistas />} />
+          <Route path="/mis-asignaciones" element={<MisAsignaciones />} /> 
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />

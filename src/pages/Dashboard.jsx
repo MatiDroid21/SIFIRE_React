@@ -8,17 +8,16 @@ const kpisMock = [
 ]
 
 const reportesRecientesMock = [
-  { id: 1, titulo: 'Incendio Cerro San Cristóbal', nivel: 'ALTO',   estado: 'EN_PROCESO', hora: '21:10' },
-  { id: 2, titulo: 'Foco Lo Barnechea',            nivel: 'MEDIO',  estado: 'PENDIENTE',  hora: '20:45' },
-  { id: 3, titulo: 'Humo sector Pudahuel',         nivel: 'BAJO',   estado: 'PENDIENTE',  hora: '20:30' },
-  { id: 4, titulo: 'Incendio Vitacura resuelto',   nivel: 'ALTO',   estado: 'CONTROLADO', hora: '19:55' },
-  { id: 5, titulo: 'Alerta Las Condes',            nivel: 'MEDIO',  estado: 'CONTROLADO', hora: '19:20' },
+  { id: 1, titulo: 'Incendio Sector Carén',         nivel: 'ALTO',  estado: 'EN_CURSO',  hora: '21:10' },
+  { id: 2, titulo: 'Foco Cerro Las Ramadas',        nivel: 'MEDIO', estado: 'PENDIENTE', hora: '20:45' },
+  { id: 3, titulo: 'Humo sector El Maitén',         nivel: 'BAJO',  estado: 'PENDIENTE', hora: '20:30' },
+  { id: 4, titulo: 'Incendio Sector Ponio resuelto',nivel: 'ALTO',  estado: 'CONTROLADO',hora: '19:55' },
+  { id: 5, titulo: 'Alerta Quebrada El Durazno',    nivel: 'MEDIO', estado: 'CONTROLADO',hora: '19:20' },
 ]
-
 const coloresNivel = { ALTO: '#ef4444', MEDIO: '#f97316', BAJO: '#eab308' }
 const coloresEstado = {
   PENDIENTE:   { bg: '#fef9c3', text: '#854d0e' },
-  EN_PROCESO:  { bg: '#fee2e2', text: '#991b1b' },
+  EN_CURSO:  { bg: '#fee2e2', text: '#991b1b' },
   CONTROLADO:  { bg: '#dcfce7', text: '#166534' },
   CERRADO:     { bg: '#f1f5f9', text: '#475569' },
 }
@@ -101,7 +100,6 @@ export default function Dashboard() {
           </tbody>
         </table>
       </div>
-
     </div>
   )
 }

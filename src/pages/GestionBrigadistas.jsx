@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 
 const brigadistasMock = [
-  { id: 1, nombre: 'Carlos Rojas',    email: 'brigadista@demo.cl', telefono: '+56 9 8765 4321', estado: 'ACTIVO'    },
-  { id: 2, nombre: 'Pedro Sánchez',   email: 'pedro@demo.cl',      telefono: '+56 9 7654 3210', estado: 'ACTIVO'    },
-  { id: 3, nombre: 'Laura Fuentes',   email: 'laura@demo.cl',      telefono: '+56 9 6543 2109', estado: 'INACTIVO'  },
+  { id: 1, nombre: 'Carlos Rojas',  email: 'brigadista@demo.cl', telefono: '+56 9 8765 4321', estado: 'ACTIVO',   asignaciones: 1 },
+  { id: 2, nombre: 'Pedro Sánchez', email: 'pedro@demo.cl',      telefono: '+56 9 7654 3210', estado: 'ACTIVO',   asignaciones: 0 },
+  { id: 3, nombre: 'Laura Fuentes', email: 'laura@demo.cl',      telefono: '+56 9 6543 2109', estado: 'INACTIVO', asignaciones: 0 },
 ]
 
 const initialForm = { nombre: '', email: '', telefono: '', password: '' }
@@ -57,6 +57,7 @@ export default function GestionBrigadistas() {
       email: form.email,
       telefono: form.telefono || '—',
       estado: 'ACTIVO',
+      asignaciones: 0,
     }
 
     setBrigadistas([nuevo, ...brigadistas])
@@ -67,8 +68,8 @@ export default function GestionBrigadistas() {
     setTimeout(() => setExito(false), 3000)
   }
 
+  // TODO: reemplazar por PATCH /bff/usuarios/:id/estado
   const toggleEstado = (id) => {
-    // TODO: reemplazar por PATCH /bff/usuarios/:id/estado
     setBrigadistas(prev =>
       prev.map(b => b.id === id
         ? { ...b, estado: b.estado === 'ACTIVO' ? 'INACTIVO' : 'ACTIVO' }
@@ -101,7 +102,7 @@ export default function GestionBrigadistas() {
       {/* Alerta éxito */}
       {exito && (
         <div style={{ backgroundColor: '#dcfce7', color: '#166534', padding: '0.8rem 1.2rem', borderRadius: '8px', marginBottom: '1rem', fontWeight: 500 }}>
-          Brigadista registrado correctamente.
+          ✓ Brigadista registrado correctamente.
         </div>
       )}
 
@@ -151,10 +152,7 @@ export default function GestionBrigadistas() {
             <div style={{ marginTop: '1.2rem', display: 'flex', gap: '0.8rem' }}>
               <button type="submit" disabled={loading}
                 style={{ backgroundColor: '#3b82f6', color: '#fff', border: 'none', padding: '0.7rem 1.5rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer' }}>
-                {loading
-                  ? 'Registrando...'
-                  : 'Registrar Brigadista'
-                }
+                {loading ? 'Registrando...' : 'Registrar Brigadista'}
               </button>
               <button type="button" onClick={() => { setShowForm(false); setForm(initialForm); setErrors({}) }}
                 style={{ backgroundColor: '#f1f5f9', color: '#475569', border: 'none', padding: '0.7rem 1.5rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer' }}>
@@ -175,7 +173,7 @@ export default function GestionBrigadistas() {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ backgroundColor: '#f8fafc' }}>
-              {['#', 'Nombre', 'Correo', 'Teléfono', 'Estado', 'Acción'].map(h => (
+              {['#', 'Nombre', 'Correo', 'Teléfono', 'Asignaciones', 'Estado', 'Acción'].map(h => (
                 <th key={h} style={{ padding: '0.8rem 1.5rem', textAlign: 'left', fontSize: '0.8rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase' }}>
                   {h}
                 </th>
@@ -189,6 +187,21 @@ export default function GestionBrigadistas() {
                 <td style={{ padding: '1rem 1.5rem', fontWeight: 500, color: '#1e293b' }}>{b.nombre}</td>
                 <td style={{ padding: '1rem 1.5rem', color: '#64748b', fontSize: '0.9rem' }}>{b.email}</td>
                 <td style={{ padding: '1rem 1.5rem', color: '#64748b', fontSize: '0.9rem' }}>{b.telefono}</td>
+
+                {/* columna nueva — asignaciones activas */}
+                <td style={{ padding: '1rem 1.5rem' }}>
+                  <span style={{
+                    backgroundColor: b.asignaciones > 0 ? '#fef9c3' : '#f1f5f9',
+                    color: b.asignaciones > 0 ? '#854d0e' : '#94a3b8',
+                    padding: '0.25rem 0.75rem',
+                    borderRadius: '999px',
+                    fontSize: '0.8rem',
+                    fontWeight: 600
+                  }}>
+                    {b.asignaciones > 0 ? `${b.asignaciones} activa${b.asignaciones > 1 ? 's' : ''}` : 'Sin asignar'}
+                  </span>
+                </td>
+
                 <td style={{ padding: '1rem 1.5rem' }}>
                   <span style={{
                     backgroundColor: b.estado === 'ACTIVO' ? '#dcfce7' : '#f1f5f9',
