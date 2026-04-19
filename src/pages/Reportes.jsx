@@ -10,9 +10,9 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 const iconDefault = L.icon({ iconUrl, shadowUrl, iconSize: [25, 41], iconAnchor: [12, 41] })
 
 const reportesMock = [
-  { id: 1, titulo: 'Incendio Cerro San Cristóbal', nivel: 'ALTO',  estado: 'EN_CURSO',  fecha: '15-04-2026', origen: 'FUNCIONARIO', descripcion: 'Se reporta un incendio activo con gran cantidad de humo visible desde varios puntos de la ciudad.' },
-  { id: 2, titulo: 'Foco Lo Barnechea',            nivel: 'MEDIO', estado: 'PENDIENTE', fecha: '15-04-2026', origen: 'CIUDADANO',   descripcion: 'Vecinos reportan un posible foco de incendio en el sector de Lo Barnechea.' },
-  { id: 3, titulo: 'Humo sector Pudahuel',         nivel: 'BAJO',  estado: 'PENDIENTE', fecha: '15-04-2026', origen: 'BRIGADISTA',  descripcion: 'Se observa humo en el sector de Pudahuel, pero no se han confirmado llamas.' },
+  { id: 1, titulo: 'Incendio Sector Carén',       nivel: 'ALTO',  estado: 'EN_CURSO',  fecha: '15-04-2026', origen: 'FUNCIONARIO', descripcion: 'Incendio activo en el sector Carén, con humo visible desde el pueblo. Se recomienda evitar la zona.' },
+  { id: 2, titulo: 'Foco Cerro Las Ramadas',      nivel: 'MEDIO', estado: 'PENDIENTE', fecha: '15-04-2026', origen: 'CIUDADANO',   descripcion: 'Vecinos reportan posible foco en Cerro Las Ramadas, se observa humo pero no se confirman llamas.' },
+  { id: 3, titulo: 'Humo sector El Maitén',       nivel: 'BAJO',  estado: 'PENDIENTE', fecha: '15-04-2026', origen: 'BRIGADISTA',  descripcion: 'Se observa columna de humo leve en el sector El Maitén, brigada en camino a verificar.' },
 ]
 
 const coloresEstado = {
@@ -140,7 +140,7 @@ export default function Reportes() {
                   </span>
                 </label>
                 <div style={{ borderRadius: '8px', overflow: 'hidden', border: '1px solid #e2e8f0', height: '280px' }}>
-                  <MapContainer center={[-33.45, -70.65]} zoom={11} style={{ height: '100%', width: '100%' }}>
+                  <MapContainer center={[-30.695, -70.958]} zoom={12} style={{ height: '100%', width: '100%' }}>
                     <TileLayer
                       url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
                       attribution='&copy; <a href="https://carto.com/">CARTO</a>'

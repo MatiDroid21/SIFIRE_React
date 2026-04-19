@@ -14,12 +14,11 @@ L.Icon.Default.mergeOptions({ iconRetinaUrl, iconUrl, shadowUrl })
 
 // con esto te haces unos datos de prueba
 const reportesMock = [
-  { id: 1, lat: -33.45, lng: -70.65, tipo: 'incendio', nivel: 'alto', titulo: 'Incendio Cerro San Cristóbal' },
-  { id: 2, lat: -33.47, lng: -70.60, tipo: 'humo', nivel: 'medio', titulo: 'Columna de humo Lo Barnechea' },
-  { id: 3, lat: -33.43, lng: -70.70, tipo: 'incendio', nivel: 'bajo', titulo: 'Foco menor Pudahuel' },
-  { id: 4, lat: -33.46, lng: -70.62, tipo: 'incendio', nivel: 'resuelto', titulo: 'Incendio Resuelto Vitacura' },
+  { id: 1, lat: -30.692, lng: -70.962, tipo: 'incendio', nivel: 'alto',     titulo: 'Incendio Sector Carén' },
+  { id: 2, lat: -30.701, lng: -70.948, tipo: 'humo',     nivel: 'medio',    titulo: 'Columna de humo Cerro Las Ramadas' },
+  { id: 3, lat: -30.685, lng: -70.971, tipo: 'incendio', nivel: 'bajo',     titulo: 'Foco menor El Maitén' },
+  { id: 4, lat: -30.710, lng: -70.955, tipo: 'incendio', nivel: 'resuelto', titulo: 'Incendio Resuelto Sector Ponio' },
 ]
-
 const coloresPorNivel = { alto: '#ef4444', medio: '#f97316', bajo: '#eadb08', resuelto: '#22c55e' }
 
 export default function MapaIncendios() {
